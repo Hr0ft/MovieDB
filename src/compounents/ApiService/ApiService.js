@@ -20,10 +20,12 @@ export default class ApiService {
 
   //GET Rate Movie
   async getRateMovie(guestSessionID) {
-    const res = await this.getResource(
-      `${this._apiBase}/guest_session/${guestSessionID}/rated/movies?api_key=${this._apiKey}`
-    );
-    return res;
+    if (guestSessionID) {
+      const res = await this.getResource(
+        `${this._apiBase}/guest_session/${guestSessionID}/rated/movies?api_key=${this._apiKey}`
+      );
+      return res;
+    }
   }
 
   // GET GenresList
@@ -50,7 +52,6 @@ export default class ApiService {
     const body = {
       value: rate,
     };
-    console.log(movieId);
     const res = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}/rating?api_key=${this._apiKey}&guest_session_id=${guestSessionID}`,
       {

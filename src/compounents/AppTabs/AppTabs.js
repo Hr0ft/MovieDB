@@ -5,7 +5,7 @@ import debounce from 'lodash.debounce';
 import ApiService from '../ApiService';
 import Spinner from '../Spinner/Spinner';
 import MovieList from '../MovieList';
-import MyRatedMovie from '../MyRatedMovie/myRatedMovie';
+import MyRatedMovie from '../MyRatedMovie';
 import Footer from '../Footer';
 import { GenreListProvider } from '../GenreListService';
 
@@ -23,7 +23,7 @@ class AppTabs extends Component {
     genres: [],
     loadGenres: false,
 
-    rateMovieList: null,
+    rateMovieList: [],
     totalRateResult: 0,
     load: false,
   };
@@ -31,6 +31,7 @@ class AppTabs extends Component {
   componentDidMount() {
     this.updateMovie();
     this.updateGenres();
+    this.updateRateMovie();
   }
 
   componentDidUpdate(prevProps) {
@@ -110,12 +111,19 @@ class AppTabs extends Component {
 
     const debounceChangeSearch = this.props.changeSearch;
 
-    let myRatedMovie = <MyRatedMovie guestSessionID={guestSessionID} />;
+    let myRatedMovie = <MyRatedMovie guestSessionID={guestSessionID} rateMovieList={this.state.rateMovieList} />;
 
     return (
       <GenreListProvider value={this.state.genres}>
         <header>
-          <Tabs className="tabs" defaultActiveKey="1" centered>
+          <Tabs
+            className="tabs"
+            defaultActiveKey="1"
+            centered
+            onChange={() => {
+              this.updateRateMovie();
+            }}
+          >
             <TabPane tab="Search" key="1">
               <Search className="search" placeholder="Search movie" onChange={debounce(debounceChangeSearch, 1000)} />
               {moviesList}

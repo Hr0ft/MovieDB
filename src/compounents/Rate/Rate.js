@@ -16,9 +16,7 @@ class App extends Component {
         count="10"
         style={{ fontSize: 14 }}
         onChange={(value) => {
-          this.apiService.postRateMovie(movieid, value, guestSessionID).then((data) => {
-            console.log(data);
-          });
+          this.apiService.postRateMovie(movieid, value, guestSessionID);
         }}
       />
     );
